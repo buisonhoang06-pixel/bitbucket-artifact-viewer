@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="com.example.CartTest" time="0.12" tests="3" errors="0" skipped="1" failures="1">
+  <properties>
+    <property name="java.version" value="21"/>
+  </properties>
+  <testcase name="addsItem" classname="com.example.CartTest" time="0.01"/>
+  <testcase name="removesItem" classname="com.example.CartTest" time="0.02">
+    <failure message="expected: &lt;1&gt; but was: &lt;2&gt;" type="org.opentest4j.AssertionFailedError">org.opentest4j.AssertionFailedError: expected: &lt;1&gt; but was: &lt;2&gt;
+	at com.example.CartTest.removesItem(CartTest.java:21)</failure>
+  </testcase>
+  <testcase name="appliesDiscount" classname="com.example.CartTest" time="0">
+    <skipped message="not ready yet"/>
+  </testcase>
+</testsuite>

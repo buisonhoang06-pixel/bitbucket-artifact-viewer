@@ -1,0 +1,3 @@
+/* A stylesheet that tries to end the <style> it is inlined into and to add a resource hint after it. */
+#escape-check { color: rgb(4, 5, 6); }
+</style><link rel="preconnect" href="https://hint.test/"><style>

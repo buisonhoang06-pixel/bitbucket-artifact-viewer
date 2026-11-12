@@ -1,0 +1,1 @@
+<testsuites><testsuite name="outer" tests="3" failures="1"><testsuite name="inner-a" tests="2" failures="1"><testcase name="a1" time="0.1"/><testcase name="a2" time="0.2"><failure message="boom"/></testcase></testsuite><testsuite name="inner-b" tests="1"><testcase name="b1" time="0.3"/></testsuite></testsuite></testsuites>

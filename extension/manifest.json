@@ -1,0 +1,60 @@
+{
+  "manifest_version": 3,
+  "name": "Artifact Viewer for Bitbucket Pipelines",
+  "version": "1.2.3",
+  "description": "Shows a Bitbucket Pipelines artifact, such as an HTML report, on the pipeline page, without downloading and unpacking it.",
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    },
+    "default_title": "Open this pipeline's artifact, or a downloaded .tar.gz"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://bitbucket.org/*"
+      ],
+      "js": [
+        "content-fetch.js",
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "viewer.html"
+      ],
+      "matches": [
+        "https://bitbucket.org/*"
+      ]
+    }
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'; frame-src 'none'"
+  },
+  "permissions": [
+    "scripting",
+    "webRequest"
+  ],
+  "host_permissions": [
+    "https://bitbucket.org/*"
+  ],
+  "optional_host_permissions": [
+    "https://*/*"
+  ]
+}

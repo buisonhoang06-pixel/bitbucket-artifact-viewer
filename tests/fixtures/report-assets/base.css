@@ -1,0 +1,4 @@
+@import "theme.css";
+@font-face { font-family: "Fixture Sans"; src: url("fonts/fixture.woff") format("woff"); }
+.font-sample { font-family: "Fixture Sans", serif; }
+body { background: url(img/logo.png) no-repeat; }

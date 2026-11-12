@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Artifact Viewer for Bitbucket Pipelines</title>
+  <link rel="stylesheet" href="viewer.css">
+  <script type="module" src="viewer.js"></script>
+</head>
+<body>
+  <header class="bar">
+    <button id="back" type="button" class="button" hidden disabled>Back</button>
+    <button id="toggle-files" type="button" class="button" hidden aria-pressed="false" title="Show or hide the list of files">Files</button>
+    <strong class="brand">Artifact Viewer for Bitbucket Pipelines</strong>
+    <span id="source" class="source"></span>
+    <button id="open-tab" type="button" class="button" hidden>Open in new tab</button>
+    <button id="open-file" type="button" class="button">Open a .tar.gz…</button>
+    <input id="file-input" type="file" accept=".gz,.tgz,.tar,application/gzip,application/x-gzip,application/x-tar" hidden>
+  </header>
+
+  <main>
+    <section id="panel" class="panel" aria-live="polite" hidden>
+      <!-- While something loads: the spinner and a bar that fills as the download arrives. -->
+      <div id="loader" class="loader" aria-hidden="true" hidden>
+        <picture class="loader-art">
+          <source srcset="loading-still-dark.png" media="(prefers-reduced-motion: reduce) and (prefers-color-scheme: dark)">
+          <source srcset="loading-still.png" media="(prefers-reduced-motion: reduce)">
+          <source srcset="loading-dark.gif" media="(prefers-color-scheme: dark)">
+          <img src="loading.gif" width="112" height="112" alt="">
+        </picture>
+        <div id="loader-bar" class="loader-bar"><span></span></div>
+      </div>
+      <h1 id="panel-title"></h1>
+      <p id="loader-line" class="loader-line" aria-hidden="true" hidden></p>
+      <p id="panel-detail"></p>
+      <ul id="chooser" class="chooser" hidden></ul>
+      <div id="panel-actions" class="actions"></div>
+    </section>
+
+    <div id="workspace" class="workspace" hidden>
+      <nav id="files" class="files" aria-label="Files in the artifact"></nav>
+      <div class="view">
+        <div id="file-bar" class="file-bar">
+          <span id="file-name" class="file-name"></span>
+          <span id="file-size" class="file-size"></span>
+          <button id="toggle-raw" type="button" class="button" hidden aria-pressed="false" title="Show the file as it is">Raw</button>
+          <button id="open-pdf" type="button" class="button" hidden title="Show this PDF in Chrome's PDF viewer, in a new tab">Open PDF</button>
+          <button id="download" type="button" class="button" title="Save this file">Download</button>
+        </div>
+        <p id="notice" class="notice" role="status" hidden></p>
+        <iframe id="frame" title="File content" sandbox="allow-same-origin"></iframe>
+      </div>
+    </div>
+  </main>
+
+  <div id="drop-overlay" class="drop-overlay" hidden>Drop the .tar.gz to open it</div>
+</body>
+</html>

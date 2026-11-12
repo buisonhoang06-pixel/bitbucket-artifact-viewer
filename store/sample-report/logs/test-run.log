@@ -1,0 +1,30 @@
+14:05:01 Running 128 tests in 4 suites
+14:05:02 checkout-api: 46 tests
+14:05:03   ✓ checkout-api case 1
+14:05:04   ✓ checkout-api case 2
+14:05:05   ✓ checkout-api case 3
+14:05:06   ✓ checkout-api case 4
+14:05:07   ✓ checkout-api case 5
+14:05:08   ✓ checkout-api case 6
+14:05:09   ✓ checkout-api case 7
+14:05:10   ✓ checkout-api case 8
+14:05:11   ✓ checkout-api case 9
+14:05:12   ✓ checkout-api case 10
+14:05:13   ✓ checkout-api case 11
+14:05:14   ✓ checkout-api case 12
+14:05:15   ✓ checkout-api case 13
+14:05:16   ✓ checkout-api case 14
+14:05:17   ✓ checkout-api case 15
+14:05:18   ✓ checkout-api case 16
+14:05:19   ✓ checkout-api case 17
+14:05:20   ✓ checkout-api case 18
+14:05:21   ✓ checkout-api case 19
+14:05:22   ✓ checkout-api case 20
+14:06:01 payments: 31 tests
+14:06:09   ✗ refunds a partial amount
+             AssertionError: expected 1250 to equal 1200
+14:06:10   ✗ rounds NZD amounts to cents
+             AssertionError: expected '12.345' to equal '12.35'
+14:07:05 cart: 29 tests, all passed
+14:07:46 search: 22 tests, 2 skipped
+14:08:13 128 tests: 124 passed, 2 failed, 2 skipped

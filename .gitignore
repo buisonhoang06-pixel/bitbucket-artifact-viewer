@@ -1,0 +1,5 @@
+# Dependencies, from package-lock.json.
+node_modules/
+
+# Release zips: npm run package builds them again.
+release/

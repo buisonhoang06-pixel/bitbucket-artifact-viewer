@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="4" failures="1" errors="0" time="1.234">
+  <testsuite name="cart" errors="0" failures="1" skipped="0" timestamp="2026-11-12T10:00:00" time="0.8" tests="2">
+    <testcase classname="cart adds an item" name="cart adds an item" time="0.01">
+    </testcase>
+    <testcase classname="cart totals" name="cart totals" time="0.02">
+      <failure>Error: expect(received).toBe(expected)
+
+Expected: 3
+Received: 4</failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="search" errors="0" failures="0" skipped="0" timestamp="2026-11-12T10:00:01" time="0.4" tests="2">
+    <testcase classname="search finds a product" name="search finds a product" time="0.1">
+    </testcase>
+    <testcase classname="search shows nothing for nonsense" name="search shows nothing for nonsense" time="0.1">
+      <system-out>no results for "qwzx"</system-out>
+    </testcase>
+  </testsuite>
+</testsuites>

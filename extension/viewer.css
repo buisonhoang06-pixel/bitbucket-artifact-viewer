@@ -1,0 +1,367 @@
+:root {
+  color-scheme: light dark;
+  --text: #172b4d;
+  --muted: #5e6c84;
+  --page: #ffffff;
+  --panel: #f4f5f7;
+  --line: #dfe1e6;
+  --accent: #0052cc;
+  --accent-hover: #0747a6;
+  --current: #deebff;
+  --hover: #ebecf0;
+  --folder: #388bff;
+  --guide: #c1c7d0;
+  --warn: #ffebe6;
+  --loader-accent: #1fb5b5;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text: #dee4ea;
+    --muted: #9fadbc;
+    --page: #1d2125;
+    --panel: #22272b;
+    --line: #38414a;
+    --accent: #579dff;
+    --accent-hover: #85b8ff;
+    --current: #1c2b41;
+    --hover: #2c333a;
+    --folder: #579dff;
+    --guide: #454f59;
+    --warn: #42221f;
+    --loader-accent: #33cccc;
+  }
+}
+
+* { box-sizing: border-box; }
+
+html, body { height: 100%; }
+
+body {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--page);
+  color: var(--text);
+  font: 14px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 16px;
+  border-bottom: 1px solid var(--line);
+  background: var(--panel);
+}
+
+.brand { white-space: nowrap; }
+
+.source {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  color: var(--muted);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.button,
+.actions button {
+  padding: 6px 12px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--page);
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+}
+
+.actions button.primary {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #fff;
+}
+
+.button:hover,
+.actions button:hover { border-color: var(--accent); }
+
+.actions button.primary:hover { background: var(--accent-hover); }
+
+button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+main {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.panel {
+  max-width: 720px;
+  margin: 48px auto;
+  padding: 0 24px;
+}
+
+.panel h1 { margin: 0 0 8px; font-size: 20px; }
+
+.panel p { margin: 0 0 16px; color: var(--muted); white-space: pre-line; }
+
+.actions { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.chooser {
+  margin: 0 0 16px;
+  padding: 0;
+  list-style: none;
+}
+
+.chooser button {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  margin-bottom: 8px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--page);
+  color: var(--text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.chooser button:hover { border-color: var(--accent); }
+
+.chooser .meta { color: var(--muted); }
+
+.workspace {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(220px, 320px) 1fr;
+}
+
+.files {
+  overflow: auto;
+  border-right: 1px solid var(--line);
+  background: var(--panel);
+}
+
+.files-heading {
+  margin: 0;
+  padding: 8px 12px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* The folder tree, drawn as editors draw one. Each level is 16px in, with a guide under the chevron of each folder
+   above. A folder row has its chevron and a folder icon that opens with it; a file row has an icon of its kind (see
+   fileIcon in tree.js). The icons are masks, so that the theme gives their color. Each row is one line: a name too
+   long for it ends in an ellipsis, and the row's tooltip has the full path. */
+.files {
+  --icon-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M6 4l4 4-4 4' fill='none' stroke='black' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --icon-folder: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M1.5 4c0-.69.56-1.25 1.25-1.25h2.94c.33 0 .65.13.88.37l.93 1.13h5.75c.69 0 1.25.56 1.25 1.25v6.75c0 .69-.56 1.25-1.25 1.25H2.75c-.69 0-1.25-.56-1.25-1.25z'/%3E%3C/svg%3E");
+  --icon-folder-open: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M1.5 4c0-.69.56-1.25 1.25-1.25h2.94c.33 0 .65.13.88.37l.93 1.13h4.75c.69 0 1.25.56 1.25 1.25v.75H4.3c-.66 0-1.25.42-1.47 1.04L1.5 11.1z'/%3E%3Cpath d='M3.6 8.03c.2-.6.76-1.03 1.4-1.03h9.3c.7 0 1.2.7.96 1.36l-1.5 4.2c-.18.56-.7.94-1.3.94H2.17c-.52 0-.88-.5-.72-.99z'/%3E%3C/svg%3E");
+  --icon-file: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4.25 1.75h4.69c.2 0 .39.08.53.22l3.06 3.06c.14.14.22.33.22.53v7.69c0 .55-.45 1-1 1h-7.5c-.55 0-1-.45-1-1v-10.5c0-.55.45-1 1-1z M8.75 1.75v2.75c0 .55.45 1 1 1h2.75' fill='none' stroke='black' stroke-width='1.2' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --icon-file-text: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4.25 1.75h4.69c.2 0 .39.08.53.22l3.06 3.06c.14.14.22.33.22.53v7.69c0 .55-.45 1-1 1h-7.5c-.55 0-1-.45-1-1v-10.5c0-.55.45-1 1-1z M8.75 1.75v2.75c0 .55.45 1 1 1h2.75' fill='none' stroke='black' stroke-width='1.2' stroke-linejoin='round'/%3E%3Cpath d='M5.75 8.25h4.5M5.75 10.25h4.5M5.75 12.25h2.75' fill='none' stroke='black' stroke-width='1.1' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --icon-file-code: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4.25 1.75h4.69c.2 0 .39.08.53.22l3.06 3.06c.14.14.22.33.22.53v7.69c0 .55-.45 1-1 1h-7.5c-.55 0-1-.45-1-1v-10.5c0-.55.45-1 1-1z M8.75 1.75v2.75c0 .55.45 1 1 1h2.75' fill='none' stroke='black' stroke-width='1.2' stroke-linejoin='round'/%3E%3Cpath d='M7 8.25l-1.6 1.75L7 11.75M9 8.25l1.6 1.75L9 11.75' fill='none' stroke='black' stroke-width='1.1' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --icon-file-data: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4.25 1.75h4.69c.2 0 .39.08.53.22l3.06 3.06c.14.14.22.33.22.53v7.69c0 .55-.45 1-1 1h-7.5c-.55 0-1-.45-1-1v-10.5c0-.55.45-1 1-1z M8.75 1.75v2.75c0 .55.45 1 1 1h2.75' fill='none' stroke='black' stroke-width='1.2' stroke-linejoin='round'/%3E%3Cpath d='M7.1 7.9c-.7 0-.95.35-.95.9v.4c0 .4-.25.7-.65.7.4 0 .65.3.65.7v.4c0 .55.25.9.95.9M8.9 7.9c.7 0 .95.35.95.9v.4c0 .4.25.7.65.7-.4 0-.65.3-.65.7v.4c0 .55-.25.9-.95.9' fill='none' stroke='black' stroke-width='1' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --icon-file-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4.25 1.75h4.69c.2 0 .39.08.53.22l3.06 3.06c.14.14.22.33.22.53v7.69c0 .55-.45 1-1 1h-7.5c-.55 0-1-.45-1-1v-10.5c0-.55.45-1 1-1z M8.75 1.75v2.75c0 .55.45 1 1 1h2.75' fill='none' stroke='black' stroke-width='1.2' stroke-linejoin='round'/%3E%3Cpath d='M5.25 12.5l1.9-2.4 1.45 1.55 1-1.05 1.6 1.9z'/%3E%3Ccircle cx='9.5' cy='8.4' r='.9'/%3E%3C/svg%3E");
+  --icon-file-video: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4.25 1.75h4.69c.2 0 .39.08.53.22l3.06 3.06c.14.14.22.33.22.53v7.69c0 .55-.45 1-1 1h-7.5c-.55 0-1-.45-1-1v-10.5c0-.55.45-1 1-1z M8.75 1.75v2.75c0 .55.45 1 1 1h2.75' fill='none' stroke='black' stroke-width='1.2' stroke-linejoin='round'/%3E%3Cpath d='M6.75 8.3v3.4l2.9-1.7z'/%3E%3C/svg%3E");
+  --icon-file-archive: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4.25 1.75h4.69c.2 0 .39.08.53.22l3.06 3.06c.14.14.22.33.22.53v7.69c0 .55-.45 1-1 1h-7.5c-.55 0-1-.45-1-1v-10.5c0-.55.45-1 1-1z M8.75 1.75v2.75c0 .55.45 1 1 1h2.75' fill='none' stroke='black' stroke-width='1.2' stroke-linejoin='round'/%3E%3Cpath d='M8 2.6v.9M8 4.4v.9M8 6.2v.9' fill='none' stroke='black' stroke-width='1.1' stroke-linecap='round' stroke-linejoin='round'/%3E%3Crect x='7.1' y='8' width='1.8' height='2.6' rx='.5'/%3E%3C/svg%3E");
+  --icon-file-diff: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4.25 1.75h4.69c.2 0 .39.08.53.22l3.06 3.06c.14.14.22.33.22.53v7.69c0 .55-.45 1-1 1h-7.5c-.55 0-1-.45-1-1v-10.5c0-.55.45-1 1-1z M8.75 1.75v2.75c0 .55.45 1 1 1h2.75' fill='none' stroke='black' stroke-width='1.2' stroke-linejoin='round'/%3E%3Cpath d='M8 7.6v2.8M6.6 9h2.8M6.6 12h2.8' fill='none' stroke='black' stroke-width='1.1' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+.files ul { margin: 0; padding: 0; list-style: none; }
+
+.files > ul { padding-bottom: 12px; }
+
+.files summary,
+.files button {
+  --indent: calc(var(--depth, 0) * 16px);
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  padding: 4px 12px 4px calc(6px + var(--indent));
+  border: 0;
+  background: repeating-linear-gradient(to right, transparent 0 7.5px, var(--guide) 7.5px 8.5px, transparent 8.5px 16px) 6px 0 / var(--indent) 100% no-repeat;
+  color: var(--text);
+  font: 13px/16px system-ui, -apple-system, "Segoe UI", sans-serif;
+  text-align: left;
+  cursor: pointer;
+  list-style: none;
+}
+
+.files summary::-webkit-details-marker { display: none; }
+
+.files summary::before,
+.files summary::after,
+.files button::before {
+  content: "";
+  flex: none;
+  width: 16px;
+  height: 16px;
+  -webkit-mask: var(--icon) center / 16px 16px no-repeat;
+  mask: var(--icon) center / 16px 16px no-repeat;
+}
+
+.files summary::before { --icon: var(--icon-chevron); order: -2; background-color: var(--muted); transition: transform 120ms ease-out; }
+
+.files details[open] > summary::before { transform: rotate(90deg); }
+
+.files summary::after { --icon: var(--icon-folder); order: -1; margin-right: 6px; background-color: var(--folder); }
+
+.files details[open] > summary::after { --icon: var(--icon-folder-open); }
+
+.files button::before { --icon: var(--icon-file); margin: 0 6px 0 16px; background-color: var(--muted); }
+
+.files button[data-icon="file-text"]::before { --icon: var(--icon-file-text); }
+.files button[data-icon="file-code"]::before { --icon: var(--icon-file-code); }
+.files button[data-icon="file-data"]::before { --icon: var(--icon-file-data); }
+.files button[data-icon="file-image"]::before { --icon: var(--icon-file-image); }
+.files button[data-icon="file-video"]::before { --icon: var(--icon-file-video); }
+.files button[data-icon="file-archive"]::before { --icon: var(--icon-file-archive); }
+.files button[data-icon="file-diff"]::before { --icon: var(--icon-file-diff); }
+
+.files .name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.files summary:hover,
+.files button:hover { background-color: var(--hover); }
+
+.files button.current { background-color: var(--current); }
+
+.files summary:focus-visible,
+.files button:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .files summary::before { transition: none; }
+}
+
+@media (forced-colors: active) {
+  .files summary::before,
+  .files summary::after,
+  .files button::before { background-color: CanvasText; forced-color-adjust: none; }
+}
+
+.view {
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.file-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px;
+  border-bottom: 1px solid var(--line);
+  background: var(--panel);
+  font-size: 12px;
+}
+
+.file-bar .button { padding: 2px 10px; font-size: 12px; }
+
+.file-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-size { color: var(--muted); white-space: nowrap; }
+
+.notice {
+  margin: 0;
+  padding: 6px 12px;
+  border-bottom: 1px solid var(--line);
+  background: var(--warn);
+  word-break: break-all;
+}
+
+iframe {
+  flex: 1;
+  width: 100%;
+  border: 0;
+  background: #fff;
+}
+
+.drop-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: grid;
+  place-items: center;
+  border: 4px dashed var(--accent);
+  background: color-mix(in srgb, var(--page) 85%, transparent);
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.button:disabled { opacity: 0.5; cursor: default; }
+
+/* Inside the Artifact viewer panel on bitbucket.org: a smaller header, since Bitbucket's own tabs are right above, and
+   no file list until the Files button asks for it, so that the report has the panel's whole width. */
+.embedded .bar { padding: 4px 8px; gap: 8px; }
+
+.embedded .workspace { grid-template-columns: minmax(180px, 240px) 1fr; }
+
+.embedded .files summary,
+.embedded .files button { font-size: 12px; }
+
+.files-hidden .workspace { grid-template-columns: 1fr; }
+
+.files-hidden .files { display: none; }
+
+.button[aria-pressed="true"] { background: var(--current); }
+
+/* The loader: the spinner, and a bar that runs until the download's size is known, then fills. While busy, the
+   status (what is being looked up, downloaded or unpacked) is for screen readers only. */
+.panel.busy { text-align: center; }
+
+.loader { display: flex; flex-direction: column; align-items: center; margin: 8px 0 4px; }
+
+.loader-art img { display: block; width: 112px; height: 112px; }
+
+.loader-line { margin: 0 0 16px; color: var(--muted); font-style: italic; }
+
+.panel.busy #panel-title {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.loader-bar { position: relative; width: 240px; height: 6px; margin: 12px 0 8px; overflow: hidden; border-radius: 3px; background: var(--line); }
+
+.loader-bar span {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 40%;
+  border-radius: inherit;
+  background: var(--loader-accent);
+  animation: loader-run 1.3s ease-in-out infinite;
+}
+
+.loader-bar.known span { width: var(--done, 0%); animation: none; transition: width 0.2s ease-out; }
+
+@keyframes loader-run {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(250%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loader-bar span { animation: none !important; }
+  .loader-bar:not(.known) span { width: 100%; opacity: 0.4; }
+}
+
+.embedded .brand { display: none; }
+
+.embedded .panel { margin: 24px auto; }
+
+[hidden] { display: none !important; }

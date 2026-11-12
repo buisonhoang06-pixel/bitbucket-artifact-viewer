@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="demo-shop" tests="128" failures="2" skipped="2" time="192.0">
+  <testsuite name="payments" tests="31" failures="2" time="64.0">
+    <testcase classname="payments" name="refunds a partial amount" time="1.1">
+      <failure message="expected 1250 to equal 1200">AssertionError: expected 1250 to equal 1200
+    at refunds.test.ts:88:21</failure>
+    </testcase>
+    <testcase classname="payments" name="charges a saved card" time="1.2"/>
+  </testsuite>
+</testsuites>

@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>payments · demo-shop</title>
+<style>
+:root { --ink: #172b4d; --muted: #5e6c84; --line: #dfe1e6; --ok: #1f845a; --okbg: #dcfff1; --bad: #c9372c; --badbg: #ffeceb; --skip: #a54800; --skipbg: #fff7d6; }
+body { margin: 0; padding: 28px 36px; font: 15px/1.5 "Ubuntu", "DejaVu Sans", system-ui, sans-serif; color: var(--ink); background: #fff; }
+h1 { margin: 0 0 4px; font-size: 24px; }
+h2 { margin: 24px 0 8px; font-size: 18px; }
+.meta { color: var(--muted); margin: 0 0 20px; }
+.cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
+.card { border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; color: var(--muted); }
+.card b { display: block; font-size: 26px; color: var(--ink); }
+.card.ok b { color: var(--ok); } .card.bad b { color: var(--bad); } .card.skip b { color: var(--skip); }
+table { width: 100%; border-collapse: collapse; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+th { color: var(--muted); font-weight: 600; font-size: 13px; }
+.pill { display: inline-block; padding: 1px 10px; border-radius: 999px; font-size: 13px; font-weight: 600; }
+.pill.ok { color: var(--ok); background: var(--okbg); } .pill.bad { color: var(--bad); background: var(--badbg); } .pill.skip { color: var(--skip); background: var(--skipbg); }
+a { color: #0c66e4; }
+details { border: 1px solid var(--line); border-radius: 8px; padding: 10px 14px; margin-top: 12px; }
+summary { cursor: pointer; font-weight: 600; }
+pre { background: #f7f8f9; padding: 10px; border-radius: 6px; overflow: auto; font: 13px/1.45 "Ubuntu Mono", "DejaVu Sans Mono", monospace; }
+</style></head><body>
+<h1>payments</h1>
+<p class="meta"><a href="../summary.html">← Summary</a> · 31 tests · 2 failed · 1 min 04 s</p>
+<table><thead><tr><th>Case</th><th>Result</th><th>Time</th></tr></thead><tbody>
+<tr id="charge-card"><td>charges a saved card</td><td><span class="pill ok">passed</span></td><td>1.2 s</td></tr>
+<tr id="charge-3ds"><td>asks for 3-D Secure when required</td><td><span class="pill ok">passed</span></td><td>2.4 s</td></tr>
+<tr id="refund-full"><td>refunds the full amount</td><td><span class="pill ok">passed</span></td><td>0.9 s</td></tr>
+<tr id="refund-partial"><td>refunds a partial amount</td><td><span class="pill bad">failed</span></td><td>1.1 s</td></tr>
+<tr id="currency-nzd"><td>rounds NZD amounts to cents</td><td><span class="pill bad">failed</span></td><td>0.3 s</td></tr>
+<tr id="currency-jpy"><td>keeps JPY amounts whole</td><td><span class="pill ok">passed</span></td><td>0.2 s</td></tr>
+<tr id="webhook-retry"><td>retries a failed webhook</td><td><span class="pill ok">passed</span></td><td>3.8 s</td></tr>
+</tbody></table>
+<h2>refunds a partial amount</h2>
+<details open><summary>Failure</summary><pre>AssertionError: expected 1250 to equal 1200
+    at Object.&lt;anonymous&gt; (refunds.test.ts:88:21)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)</pre></details>
+<h2>rounds NZD amounts to cents</h2>
+<details><summary>Failure</summary><pre>AssertionError: expected '12.345' to equal '12.35'
+    at Object.&lt;anonymous&gt; (currency.test.ts:41:17)</pre></details>
+</body></html>

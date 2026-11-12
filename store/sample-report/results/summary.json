@@ -1,0 +1,1 @@
+{"pipeline":42,"branch":"main","tests":128,"passed":124,"failed":2,"skipped":2,"seconds":192,"suites":[{"name":"checkout-api","tests":46,"failed":0},{"name":"payments","tests":31,"failed":2},{"name":"cart","tests":29,"failed":0},{"name":"search","tests":22,"skipped":2}]}

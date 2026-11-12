@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Test report · demo-shop</title>
+<style>
+:root { --ink: #172b4d; --muted: #5e6c84; --line: #dfe1e6; --ok: #1f845a; --okbg: #dcfff1; --bad: #c9372c; --badbg: #ffeceb; --skip: #a54800; --skipbg: #fff7d6; }
+body { margin: 0; padding: 28px 36px; font: 15px/1.5 "Ubuntu", "DejaVu Sans", system-ui, sans-serif; color: var(--ink); background: #fff; }
+h1 { margin: 0 0 4px; font-size: 24px; }
+h2 { margin: 24px 0 8px; font-size: 18px; }
+.meta { color: var(--muted); margin: 0 0 20px; }
+.cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
+.card { border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; color: var(--muted); }
+.card b { display: block; font-size: 26px; color: var(--ink); }
+.card.ok b { color: var(--ok); } .card.bad b { color: var(--bad); } .card.skip b { color: var(--skip); }
+table { width: 100%; border-collapse: collapse; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+th { color: var(--muted); font-weight: 600; font-size: 13px; }
+.pill { display: inline-block; padding: 1px 10px; border-radius: 999px; font-size: 13px; font-weight: 600; }
+.pill.ok { color: var(--ok); background: var(--okbg); } .pill.bad { color: var(--bad); background: var(--badbg); } .pill.skip { color: var(--skip); background: var(--skipbg); }
+a { color: #0c66e4; }
+details { border: 1px solid var(--line); border-radius: 8px; padding: 10px 14px; margin-top: 12px; }
+summary { cursor: pointer; font-weight: 600; }
+pre { background: #f7f8f9; padding: 10px; border-radius: 6px; overflow: auto; font: 13px/1.45 "Ubuntu Mono", "DejaVu Sans Mono", monospace; }
+</style></head><body>
+<h1>Test report · demo-shop</h1>
+<p class="meta">Pipeline #42 · branch main · 12 Nov 2026, 14:05 · 3 min 12 s</p>
+<div class="cards"><div class="card">Tests<b>128</b></div><div class="card ok">Passed<b>124</b></div><div class="card bad">Failed<b>2</b></div><div class="card skip">Skipped<b>2</b></div></div>
+<table><thead><tr><th>Suite</th><th>Tests</th><th>Result</th><th>Time</th></tr></thead><tbody>
+<tr><td><a href="suites/checkout-api.html">checkout-api</a></td><td>46</td><td><span class="pill ok">passed</span></td><td>58 s</td></tr>
+<tr><td><a href="suites/payments.html">payments</a></td><td>31</td><td><span class="pill bad">2 failed</span></td><td>1 min 04 s</td></tr>
+<tr><td>cart</td><td>29</td><td><span class="pill ok">passed</span></td><td>41 s</td></tr>
+<tr><td>search</td><td>22</td><td><span class="pill skip">2 skipped</span></td><td>29 s</td></tr>
+</tbody></table>
+<details open><summary>Failures (2)</summary>
+<p><a href="suites/payments.html#refund-partial">payments › refunds a partial amount</a></p>
+<pre>AssertionError: expected 1250 to equal 1200
+    at refunds.test.ts:88:21</pre>
+<p><a href="suites/payments.html#currency-nzd">payments › rounds NZD amounts to cents</a></p>
+<pre>AssertionError: expected '12.345' to equal '12.35'
+    at currency.test.ts:41:17</pre>
+</details>
+<p class="meta">Full log: <a href="../logs/test-run.log">logs/test-run.log</a> · Results as data: <a href="../results/summary.json">results/summary.json</a></p>
+</body></html>
