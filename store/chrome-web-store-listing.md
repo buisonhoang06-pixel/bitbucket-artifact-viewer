@@ -1,11 +1,15 @@
 # Chrome Web Store submission
 
-**Submit 1.2.3, once the owner has tried it** (decided on 2026-11-12 for 1.2.1; 1.2.2 and 1.2.3 add fixes from the owner's trial). Its security review is done and its
-findings are fixed. 1.1.2 is not submitted.
+**1.2.3 was submitted for review on 2026-11-12**, public, free of charge. Its security review is done and its
+findings are fixed. 1.1.2 was never submitted.
 
 This file has the text to paste into the Chrome Web Store developer dashboard and the list of what must be decided
-first. Each block under "Paste" goes into the dashboard field named above it, as it is. Google's reviewers read
-those blocks, so every claim in them matches the code of 1.2.3.
+first. Each block under "Paste" goes into the dashboard field named above it. Paste a paragraph as one line: the
+dashboard keeps every line break, and the `>` that starts each line here is not part of the text. Google's
+reviewers read those blocks, so every claim in them matches the code of 1.2.3.
+
+The publisher's contact email must be entered and verified in the dashboard's Settings before an item can be
+published.
 
 ## Decide before submitting
 
@@ -48,14 +52,13 @@ All are PNG without alpha, as the store asks. The store icon comes from the uplo
 
 ## Test instructions for reviewers
 
-Paste:
+"Additional instructions" takes at most 500 characters; this is 484. Leave Username and Password empty. Paste:
 
-> To try the viewer without a Bitbucket account: click the extension's toolbar icon on any page, click
-> "Open a .tar.gz…" and choose the sample artifact, downloaded from
-> https://github.com/buisonhoang06-pixel/bitbucket-artifact-viewer/raw/main/store/sample-artifact.tar.gz . Its summary opens; the
-> links between its pages work, and the folder tree on the left shows its files.
-> On bitbucket.org, open a pipeline step that keeps an artifact: an "Artifact viewer" tab appears next to Build, Metrics
-> and Artifacts and shows that artifact under the tabs.
+> No Bitbucket account is needed. 1) Download the sample artifact:
+> https://github.com/buisonhoang06-pixel/bitbucket-artifact-viewer/raw/main/store/sample-artifact.tar.gz 2) Click the
+> extension's toolbar icon on any page, then "Open a .tar.gz…" and choose that file. Its summary opens, the links
+> between its pages work, and the folder tree on the left lists its files. On bitbucket.org, a pipeline step with an
+> artifact gets an "Artifact viewer" tab next to Build, Metrics and Artifacts.
 
 ## Store listing tab
 
@@ -87,9 +90,17 @@ Paste:
 > - Reports are shown safely: scripts, forms, pop-ups, frames and plug-ins in a report are switched off, and a
 >   report cannot load anything from the network.
 >
+> Source code (MIT): https://github.com/buisonhoang06-pixel/bitbucket-artifact-viewer
+>
 > Not affiliated with or endorsed by Atlassian. Bitbucket is a trademark of Atlassian.
 
-**Category:** Developer Tools.
+**Category:** Developer Tools. **Language:** English.
+
+**Homepage URL:** https://github.com/buisonhoang06-pixel/bitbucket-artifact-viewer
+**Support URL:** https://github.com/buisonhoang06-pixel/bitbucket-artifact-viewer/issues
+Leave **Official URL** empty (it needs a site verified in Google Search Console) and **Mature content** off.
+
+**Distribution tab:** Free of charge, Public, all regions.
 
 ## Privacy practices tab
 
@@ -116,20 +127,16 @@ Paste:
 > installation, so without this those tabs would show no Artifact viewer tab until the user reloads them. It injects
 > no other code, into no other site, and runs nothing from a page or from the network.
 
-**Permission justification: host permission `https://bitbucket.org/*`** (paste):
+**Permission justification: host permissions** (paste). The dashboard has one "Host permission justification"
+field for both `https://bitbucket.org/*` and the optional `https://*/*`; this text is 774 of its 1,000 characters.
 
-> Needed for the extension's core feature on bitbucket.org. A content script adds the "Artifact viewer" tab to pipeline
-> step pages and shows the viewer under it. The extension reads the open tab's address to know which build to show,
-> and it downloads that build's artifact list and the chosen artifact through the open Bitbucket tab, with the
-> user's existing session. It reads no other Bitbucket data and changes nothing on Bitbucket.
-
-**Permission justification: optional host permission `https://*/*`** (paste):
-
-> Not granted at install. Bitbucket sends each artifact download to a storage address of its own choosing, a signed
-> URL, which the extension does not hard-code. When the download goes to a host the extension cannot read, the viewer
-> names that host and asks only after the user clicks "Allow and retry" in the extension's own tab. It then requests
-> access to that single origin with chrome.permissions.request, and Chrome asks the user to confirm. The access is
-> used only to download that artifact, without cookies. No other host is ever requested.
+> https://bitbucket.org/* is the core feature: a content script adds the "Artifact viewer" tab to pipeline step pages
+> and shows the viewer under it. The extension reads the open tab's address to know which build to show, and
+> downloads that build's artifact list and artifact through the open Bitbucket tab, with the user's session. It reads
+> no other Bitbucket data and changes nothing. The optional https://*/* is not granted at install: Bitbucket sends
+> each download to a signed storage URL of its own choosing. Only when that host cannot be read does the viewer name
+> it and, after the user clicks "Allow and retry", request that single origin with chrome.permissions.request, which
+> Chrome asks the user to confirm. It is used only to download that artifact, without cookies.
 
 **Remote code:** choose "No, I am not using remote code" (paste as the justification if asked):
 
