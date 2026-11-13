@@ -148,15 +148,15 @@ async function loadBuild() {
   setSource(`${pipeline.workspace}/${pipeline.repo} · build #${pipeline.build}`);
   document.title = `Build #${pipeline.build} · ${pipeline.repo}`;
   showBusy(`Looking for the artifacts of build #${pipeline.build}…`, 'Finding your artifact…');
-  let artifacts;
+  let all;
   try {
-    artifacts = pickArtifacts(await listArtifacts(), pipeline.step);
+    all = pickArtifacts(await listArtifacts(), null);
   } catch (error) {
     if (token === generation) showFailure(error, loadBuild);
     return;
   }
   if (token !== generation) return;
-  if (artifacts.length === 0) {
+  if (all.length === 0) {
     showPanel(
       'This build has no artifacts',
       `Bitbucket lists no artifact for build #${pipeline.build}. A step keeps files only when bitbucket-pipelines.yml `
@@ -165,10 +165,21 @@ async function loadBuild() {
     );
     return;
   }
-  const wanted = pipeline.artifact ? artifacts.find((item) => item.uuid.toLowerCase() === pipeline.artifact.toLowerCase()) : null;
+  // On a step, that step's artifacts. One the user chose earlier, carried in the address, may be another step's.
+  const artifacts = pipeline.step ? pickArtifacts(all, pipeline.step) : all;
+  const wanted = pipeline.artifact ? all.find((item) => item.uuid.toLowerCase() === pipeline.artifact.toLowerCase()) : null;
   if (wanted) downloadArtifact(wanted);
   else if (artifacts.length === 1) downloadArtifact(artifacts[0]);
-  else showChooser(artifacts);
+  else if (artifacts.length > 1) showChooser(artifacts);
+  else {
+    // The step keeps none. Other steps' artifacts can be large, such as dependencies kept for a later step, so none
+    // is downloaded unless the user picks it.
+    showChooser(all, {
+      title: 'This step keeps no artifacts',
+      detail: `Build #${pipeline.build} keeps ${all.length === 1 ? 'this artifact' : 'these artifacts'} from other steps. `
+        + 'Choose one to open it.',
+    });
+  }
 }
 
 async function listArtifacts() {
@@ -535,8 +546,8 @@ function tooLargeError() {
   );
 }
 
-function showChooser(artifacts) {
-  showPanel(`Build #${pipeline.build} has ${artifacts.length} artifacts`, 'Choose the one to open.');
+function showChooser(artifacts, { title = `Build #${pipeline.build} has ${artifacts.length} artifacts`, detail = 'Choose the one to open.' } = {}) {
+  showPanel(title, detail);
   $('chooser').replaceChildren(...artifacts.map((artifact) => {
     const button = document.createElement('button');
     button.type = 'button';

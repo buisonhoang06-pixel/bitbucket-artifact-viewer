@@ -105,6 +105,21 @@ export function stepPage({ workspace, repo, build, step, artifacts = true }) {
     config.artifacts = true;
     render();
   };
+  // Like React updating the group in place: a node it removes goes, one it re-creates goes in after every node it
+  // does not own, and nodes it does not own stay where they were.
+  const groupItem = (text) => [...document.querySelectorAll('[aria-label="Log navigation"] > *')]
+    .find((item) => item.textContent.trim() === text);
+  const recreate = (item) => {
+    item.parentElement.append(item.cloneNode(true));
+    item.remove();
+  };
+  // The step's Artifacts tab goes, as when Bitbucket shows a step that is still running, and Metrics is re-created.
+  window.dropArtifacts = () => {
+    config.artifacts = false;
+    groupItem('Artifacts')?.remove();
+    recreate(groupItem('Metrics'));
+  };
+  window.recreateArtifacts = () => recreate(groupItem('Artifacts'));
   window.goToStep = (build, step) => {
     config.build = build;
     config.step = step;

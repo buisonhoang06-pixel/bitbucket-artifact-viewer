@@ -27,7 +27,8 @@ the Artifact viewer tab without a reload.
   - The report has the panel's whole width. **Files** shows the artifact's files as a folder tree, and hides it
     again. A click on a folder closes or opens it. A name too long for its row ends in "…"; hover over it to see the
     full path. In a full tab, the tree is always on the left.
-  - When a build has several artifacts, the viewer asks which one to open.
+  - When a step has several artifacts, the viewer asks which one to open. When the step keeps none, it says so and
+    lists the artifacts of the build's other steps; it downloads one only when you choose it.
   - Click **Build**, **Metrics** or **Artifacts** to go back to Bitbucket's view. Moving to another step or build
     closes the report too.
 - **Where there are no step tabs.** If a pipeline page has no Build, Metrics and Artifacts tabs, an **Open report**
@@ -146,6 +147,11 @@ The new copy asks again for a storage host the first time it needs one.
 
 ## Changes
 
+- **1.2.5.** On a step that keeps no artifacts, the viewer no longer downloads another step's artifact, such as a
+  large `node_modules` kept for a later step. It says the step keeps none and lists the build's other artifacts to
+  choose from.
+- **1.2.4.** The Artifact viewer tab no longer stays between Build and Metrics when Bitbucket takes a step's Artifacts
+  tab away, as on a step that is still running. It comes back after Artifacts once the step has them.
 - **1.2.3.** The bitbucket.org tabs that are open when the extension is installed or updated get the Artifact viewer
   tab without a reload, and the viewer can download through them.
 - **1.2.2.** In the file tree, a name too long for its row ends in "…", and hovering over it shows the full path.

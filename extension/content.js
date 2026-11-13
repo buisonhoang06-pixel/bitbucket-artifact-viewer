@@ -303,8 +303,15 @@
       return;
     }
     if (tab && !tab.link.isConnected) removeTab();
+    // Bitbucket updates the bar in place, so the tab can outlive the Artifacts tab it follows, as when the page moves
+    // to a step that is still running, or end up before it when Bitbucket re-creates a tab. It stays only right after
+    // the Artifacts tab of the bar as it is now; otherwise it goes, and comes back below where it belongs.
+    const found = findTabBar();
+    if (tab && (found?.bar !== tab.bar || !found.wrapper || tab.wrapper.previousElementSibling !== found.wrapper)) {
+      closePanel();
+      removeTab();
+    }
     if (!tab) {
-      const found = findTabBar();
       if (found?.wrapper) {
         insertTab(found);
       } else if (found) {

@@ -1,6 +1,6 @@
 {
   "name": "bitbucket-artifact-viewer",
-  "version": "1.2.3",
+  "version": "1.2.5",
   "private": true,
   "description": "Chrome extension that opens a Bitbucket Pipelines artifact in a browser tab.",
   "license": "MIT",

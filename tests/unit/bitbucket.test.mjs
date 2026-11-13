@@ -137,10 +137,10 @@ describe('pickArtifacts', () => {
     null,
   ];
 
-  test('keeps artifacts whose uuid is a UUID, and only the step\'s when the step matches', () => {
+  test('keeps artifacts whose uuid is a UUID; for a step, only that step\'s, even when that is none', () => {
     assert.deepEqual(pickArtifacts(values, null).map((item) => item.uuid), [A, B]);
     assert.deepEqual(pickArtifacts(values, STEP).map((item) => item.uuid), [A]);
-    assert.deepEqual(pickArtifacts(values, '{99999999-2222-3333-4444-555555555555}').map((item) => item.uuid), [A, B]);
+    assert.deepEqual(pickArtifacts(values, '{99999999-2222-3333-4444-555555555555}'), []);
     assert.deepEqual(pickArtifacts(undefined, null), []);
   });
 

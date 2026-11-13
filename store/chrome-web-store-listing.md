@@ -1,12 +1,14 @@
 # Chrome Web Store submission
 
 **1.2.3 was submitted for review on 2026-11-12**, public, free of charge. Its security review is done and its
-findings are fixed. 1.1.2 was never submitted.
+findings are fixed. 1.1.2 was never submitted. **1.2.5** (2026-11-13) fixes the tab's place on a step that is still
+running, and no longer downloads another step's artifact on a step that keeps none. It asks for no new permission,
+so every block below holds for it as well.
 
 This file has the text to paste into the Chrome Web Store developer dashboard and the list of what must be decided
 first. Each block under "Paste" goes into the dashboard field named above it. Paste a paragraph as one line: the
 dashboard keeps every line break, and the `>` that starts each line here is not part of the text. Google's
-reviewers read those blocks, so every claim in them matches the code of 1.2.3.
+reviewers read those blocks, so every claim in them matches the code of 1.2.5.
 
 The publisher's contact email must be entered and verified in the dashboard's Settings before an item can be
 published.
@@ -34,8 +36,8 @@ published.
 
 ## Package
 
-Upload `release/bitbucket-artifact-viewer-1.2.3-store.zip`. Its `manifest.json` is at the root of the zip, as the
-store requires. The other zip, `…-1.2.3.zip`, holds one folder and is for "Load unpacked".
+Upload `release/bitbucket-artifact-viewer-1.2.5-store.zip`. Its `manifest.json` is at the root of the zip, as the
+store requires. The other zip, `…-1.2.5.zip`, holds one folder and is for "Load unpacked".
 
 ## Graphic assets
 

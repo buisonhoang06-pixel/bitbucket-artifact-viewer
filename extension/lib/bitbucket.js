@@ -85,15 +85,14 @@ export function isTrustedNextUrl(pipeline, next) {
   }
 }
 
-// Artifacts whose uuid is a UUID (it becomes part of a URL), with the uuid in its "{...}" form; when a step is given
-// and some artifacts belong to it, only those.
+// Artifacts whose uuid is a UUID (it becomes part of a URL), with the uuid in its "{...}" form; when a step is given,
+// only that step's, which may be none: another step's artifact is never taken for it.
 export function pickArtifacts(values, step) {
   const list = (Array.isArray(values) ? values : [])
     .filter((item) => item && typeof item.uuid === 'string' && bracedUuid(item.uuid))
     .map((item) => ({ ...item, uuid: bracedUuid(item.uuid) }));
   if (!step) return list;
-  const ofStep = list.filter((item) => normalizeStep(String(item.step_uuid ?? '')) === step);
-  return ofStep.length ? ofStep : list;
+  return list.filter((item) => normalizeStep(String(item.step_uuid ?? '')) === step);
 }
 
 // The service worker's decision for an "open-viewer" or "embedded-viewer" message: the pipeline to show, or null.

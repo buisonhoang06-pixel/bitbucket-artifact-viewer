@@ -375,6 +375,19 @@ describe('the extension as shipped, with a bitbucket.org tab open', () => {
     await viewer.close();
   });
 
+  test("a step that keeps no artifacts says so and offers the build's others; nothing downloads unasked", async () => {
+    const viewer = await browser.context.newPage();
+    const before = browser.seen.content.length;
+    await viewer.goto(buildUrl(browser, BUILD.ok, `&step=${encodeURIComponent('{99999999-2222-3333-4444-555555555555}')}`));
+    assert.equal(await panelTitle(viewer), 'This step keeps no artifacts');
+    assert.equal(browser.seen.content.length, before, 'no artifact of another step is downloaded');
+    assert.deepEqual(await viewer.locator('#chooser button > span:first-child').allTextContents(), ['test-report']);
+    await viewer.getByRole('button', { name: /test-report/ }).click();
+    await waitForFrameText(viewer, 'h1', SUMMARY_TITLE);
+    assert.equal(browser.seen.content.length, before + 1, 'downloaded once it is chosen');
+    await viewer.close();
+  });
+
   test('the artifact list follows a next page on the same route, and no other', async () => {
     const viewer = await browser.context.newPage();
     await viewer.goto(buildUrl(browser, BUILD.pagedTrusted));
@@ -1480,6 +1493,27 @@ describe('the Artifact viewer tab on a step page', () => {
     assert.equal(state.build.className, SELECTED_CLASS);
     assert.equal(state.ours.className, UNSELECTED_CLASS);
     assert.equal(state.ours.selected, 'false');
+    assert.equal(await page.locator(TAB).count(), 1);
+    await page.close();
+  });
+
+  test('when Bitbucket updates the bar in place, the tab stays right after Artifacts, or goes with it', async () => {
+    const page = await browser.openBitbucketTab(BUILD.ok);
+    // Artifacts re-created after the tab: the tab moves back behind it.
+    await page.evaluate(() => window.recreateArtifacts());
+    await page.waitForFunction(() => [...document.querySelectorAll('[aria-label="Log navigation"] a[role="tab"]')].at(-1)?.hasAttribute('data-bitbucket-artifact-viewer'));
+    assert.deepEqual((await tabState(page)).order, ['Build', 'Metrics', 'Artifacts', 'Artifact viewer']);
+    // Artifacts gone, as on a step that is still running: no tab between Build and Metrics, and no button either.
+    await page.locator(TAB).click();
+    await waitForEmbedded(page, 'h1', SUMMARY_TITLE);
+    await page.evaluate(() => window.dropArtifacts());
+    await page.waitForFunction((tab) => !document.querySelector(tab), TAB);
+    await page.locator(PANEL).waitFor({ state: 'detached' });
+    assert.deepEqual((await tabState(page)).order, ['Build', 'Metrics']);
+    // The step ends and gets its Artifacts tab: the tab is back after it.
+    await page.evaluate(() => window.finishStep());
+    await page.locator(TAB).waitFor();
+    assert.deepEqual((await tabState(page)).order, ['Build', 'Metrics', 'Artifacts', 'Artifact viewer']);
     assert.equal(await page.locator(TAB).count(), 1);
     await page.close();
   });
