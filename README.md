@@ -24,7 +24,7 @@ A Chrome extension that shows a Bitbucket Pipelines artifact right on the pipeli
 
 ## Install
 
-- **Chrome Web Store:** coming soon.
+- **Chrome Web Store:** [Artifact Viewer for Bitbucket Pipelines](https://chromewebstore.google.com/detail/artifact-viewer-for-bitbu/ipbnfoiefnakdbbbmajmocjfmdjlcfep). This is the easiest way: Chrome keeps it up to date.
 - **From the source:**
   1. Clone this repository.
   2. Open `chrome://extensions`, turn on **Developer mode**, click **Load unpacked** and choose the `extension`
