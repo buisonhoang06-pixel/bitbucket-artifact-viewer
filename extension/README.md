@@ -33,8 +33,10 @@ the Artifact viewer tab without a reload.
     closes the report too.
 - **Where there are no step tabs.** If a pipeline page has no Build, Metrics and Artifacts tabs, an **Open report**
   button appears at the bottom right after a few seconds. It opens the viewer in a new tab.
-- **From the toolbar icon.** On a pipeline page, the icon opens that build in a new tab. On any other page it opens
-  the viewer for a downloaded file.
+- **From the toolbar icon.** The icon opens a small menu:
+  - on a pipeline page, **Open the artifacts of build #N** opens that build in a new tab;
+  - **Open a downloaded .tar.gz…** opens the viewer for a file on your disk;
+  - **Support me on Ko-fi** and **Tell me on GitHub** open those sites in a new tab, only when you click them.
 - **A downloaded artifact.** Drop the `.tar.gz` on the viewer, or click **Open a .tar.gz…**.
 
 What each file shows as:
@@ -76,6 +78,8 @@ Size limits:
 
 - **Access to bitbucket.org.** This is what adds the Artifact viewer tab and the button. It also lets the extension read
   two things with your session: the list of a build's artifacts and an artifact's content. It reads nothing else.
+- **The toolbar menu.** To offer the build in front, it reads that tab's address, which Chrome shows the extension on
+  bitbucket.org only. Its Ko-fi and GitHub links open in a new tab only when you click them.
 - **Adding its scripts to open tabs** (the `scripting` permission). When the extension is installed or updated, it adds
   its own two scripts to the bitbucket.org tabs that are already open, the same scripts Chrome adds to every
   bitbucket.org page loaded later. Without it, those tabs would need a reload.
@@ -147,6 +151,9 @@ The new copy asks again for a storage host the first time it needs one.
 
 ## Changes
 
+- **1.2.6.** The toolbar icon opens a small menu instead of the viewer: the artifacts of the build in front, the
+  viewer for a downloaded file, a thank-you with a link to support the project on Ko-fi, and a link to GitHub for
+  problems and ideas.
 - **1.2.5.** On a step that keeps no artifacts, the viewer no longer downloads another step's artifact, such as a
   large `node_modules` kept for a later step. It says the step keeps none and lists the build's other artifacts to
   choose from.

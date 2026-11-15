@@ -83,6 +83,7 @@ The repository:
 - `extension/` — the extension:
   - `manifest.json`;
   - `background.js`;
+  - the toolbar menu `popup.html`, `popup.js` and `popup.css`;
   - the content scripts `content.js` and `content-fetch.js`;
   - the viewer `viewer.html`, `viewer.js` and `viewer.css`;
   - `lib/`, with the archive reader, file kinds, Markdown, JUnit, rendering, links and the folder tree.

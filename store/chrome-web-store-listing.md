@@ -1,14 +1,17 @@
 # Chrome Web Store submission
 
-**1.2.3 was submitted for review on 2026-11-12**, public, free of charge. Its security review is done and its
-findings are fixed. 1.1.2 was never submitted. **1.2.5** (2026-11-13) fixes the tab's place on a step that is still
-running, and no longer downloads another step's artifact on a step that keeps none. It asks for no new permission,
-so every block below holds for it as well.
+**1.2.3 was published on 2026-11-14**, public, free of charge, after the review it was submitted to on 2026-11-12.
+Its security review is done and its findings are fixed. 1.1.2 was never submitted. Two updates followed; neither asks
+for a new permission, so every block below holds for them as well:
+- **1.2.5** (2026-11-13) fixes the tab's place on a step that is still running, and no longer downloads another
+  step's artifact on a step that keeps none;
+- **1.2.6** (2026-11-15) gives the toolbar icon a small menu: the build in front, the viewer for a downloaded file,
+  and links to Ko-fi and GitHub. The test instructions and the privacy policy below follow it.
 
 This file has the text to paste into the Chrome Web Store developer dashboard and the list of what must be decided
 first. Each block under "Paste" goes into the dashboard field named above it. Paste a paragraph as one line: the
 dashboard keeps every line break, and the `>` that starts each line here is not part of the text. Google's
-reviewers read those blocks, so every claim in them matches the code of 1.2.5.
+reviewers read those blocks, so every claim in them matches the code of 1.2.6.
 
 The publisher's contact email must be entered and verified in the dashboard's Settings before an item can be
 published.
@@ -30,14 +33,14 @@ published.
 4. **Visibility: Public, decided on 2026-11-12.** The extension is open source (MIT) and for every Bitbucket user.
    Unlisted (anyone with the link) and Private (chosen users) go through the same review.
 5. **Something reviewers can try: done.** `store/sample-artifact.tar.gz` (a made-up test report, no real data) is in
-   the public repository: https://github.com/buisonhoang06-pixel/bitbucket-artifact-viewer/raw/main/store/sample-artifact.tar.gz. The test instructions below link to it. Reviewers open it with
-   "Open a .tar.gz…" from the toolbar icon.
+   the public repository: https://github.com/buisonhoang06-pixel/bitbucket-artifact-viewer/raw/main/store/sample-artifact.tar.gz. The test instructions below link to it. Reviewers open the
+   viewer from the toolbar icon's menu, then the file with "Open a .tar.gz…".
 6. **Screenshots and tiles.** They are ready; see "Graphic assets".
 
 ## Package
 
-Upload `release/bitbucket-artifact-viewer-1.2.5-store.zip`. Its `manifest.json` is at the root of the zip, as the
-store requires. The other zip, `…-1.2.5.zip`, holds one folder and is for "Load unpacked".
+Upload `release/bitbucket-artifact-viewer-1.2.6-store.zip`. Its `manifest.json` is at the root of the zip, as the
+store requires. The other zip, `…-1.2.6.zip`, holds one folder and is for "Load unpacked".
 
 ## Graphic assets
 
@@ -54,13 +57,13 @@ All are PNG without alpha, as the store asks. The store icon comes from the uplo
 
 ## Test instructions for reviewers
 
-"Additional instructions" takes at most 500 characters; this is 484. Leave Username and Password empty. Paste:
+"Additional instructions" takes at most 500 characters; this is 494. Leave Username and Password empty. Paste:
 
 > No Bitbucket account is needed. 1) Download the sample artifact:
 > https://github.com/buisonhoang06-pixel/bitbucket-artifact-viewer/raw/main/store/sample-artifact.tar.gz 2) Click the
-> extension's toolbar icon on any page, then "Open a .tar.gz…" and choose that file. Its summary opens, the links
-> between its pages work, and the folder tree on the left lists its files. On bitbucket.org, a pipeline step with an
-> artifact gets an "Artifact viewer" tab next to Build, Metrics and Artifacts.
+> extension's toolbar icon, then "Open a downloaded .tar.gz…". 3) In the viewer, click "Open a .tar.gz…" and choose
+> that file. Its summary opens, with working links and a folder tree of its files. On bitbucket.org, a pipeline step
+> with an artifact gets an "Artifact viewer" tab next to Build, Metrics and Artifacts.
 
 ## Store listing tab
 
@@ -178,8 +181,8 @@ used for creditworthiness or lending.
 > analytics, tracking or advertising. A file is saved to your disk only when you click Download.
 >
 > **Who it talks to.** bitbucket.org; the storage host Bitbucket redirects a download to, and only if you allowed that
-> host; and websites you choose to open from a link in a report. Nothing is sent to the developer or to any third
-> party, and nothing is sold.
+> host; and websites you choose to open, from a link in a report or from the Ko-fi and GitHub links in the extension's
+> toolbar menu. Nothing is sent to the developer or to any third party, and nothing is sold.
 >
 > **Credentials.** The extension never reads, stores or sends your password, tokens or cookies. The browser attaches
 > your existing session to requests to bitbucket.org, and no cookie is sent to the storage host.

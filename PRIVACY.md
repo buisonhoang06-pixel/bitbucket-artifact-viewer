@@ -14,8 +14,8 @@ its temporary storage while the viewer is open. The extension stores nothing and
 analytics, tracking or advertising. A file is saved to your disk only when you click Download.
 
 **Who it talks to.** bitbucket.org; the storage host Bitbucket redirects a download to, and only if you allowed that
-host; and websites you choose to open from a link in a report. Nothing is sent to the developer or to any third
-party, and nothing is sold.
+host; and websites you choose to open, from a link in a report or from the Ko-fi and GitHub links in the extension's
+toolbar menu. Nothing is sent to the developer or to any third party, and nothing is sold.
 
 **Credentials.** The extension never reads, stores or sends your password, tokens or cookies. The browser attaches
 your existing session to requests to bitbucket.org, and no cookie is sent to the storage host.
@@ -25,4 +25,4 @@ Policy, including the Limited Use requirements.
 
 **Contact.** Open an issue at https://github.com/buisonhoang06-pixel/bitbucket-artifact-viewer/issues.
 
-Last updated: 2026-11-12.
+Last updated: 2026-11-15.

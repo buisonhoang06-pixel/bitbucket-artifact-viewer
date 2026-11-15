@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Artifact Viewer for Bitbucket Pipelines",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "description": "Shows a Bitbucket Pipelines artifact, such as an HTML report, on the pipeline page, without downloading and unpacking it.",
   "icons": {
     "16": "icons/icon16.png",
@@ -20,7 +20,8 @@
       "48": "icons/icon48.png",
       "128": "icons/icon128.png"
     },
-    "default_title": "Open this pipeline's artifact, or a downloaded .tar.gz"
+    "default_title": "Artifact Viewer for Bitbucket Pipelines",
+    "default_popup": "popup.html"
   },
   "content_scripts": [
     {

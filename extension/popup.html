@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Artifact Viewer for Bitbucket Pipelines</title>
+  <link rel="stylesheet" href="popup.css">
+  <script type="module" src="popup.js"></script>
+</head>
+<body>
+  <header class="brand">
+    <img src="icons/icon48.png" width="32" height="32" alt="">
+    <h1>Artifact Viewer for Bitbucket Pipelines</h1>
+  </header>
+
+  <div class="actions">
+    <button id="open-build" type="button" class="primary" hidden></button>
+    <button id="open-viewer" type="button">Open a downloaded .tar.gz…</button>
+  </div>
+
+  <section class="support" aria-labelledby="thanks">
+    <p id="thanks" class="thanks">Thank you for using Artifact Viewer!</p>
+    <p>It is free and open source. If it saves you time, you can support its development with a coffee.</p>
+    <a id="ko-fi" class="ko-fi" href="https://ko-fi.com/hoangbuison" target="_blank" rel="noopener noreferrer">☕ Support me on Ko-fi</a>
+  </section>
+
+  <footer>
+    <p>Have an idea or found a bug?
+      <a id="issues" href="https://github.com/buisonhoang06-pixel/bitbucket-artifact-viewer/issues" target="_blank" rel="noopener noreferrer">Tell me on GitHub</a></p>
+    <p class="made">Made with <span role="img" aria-label="love">❤</span> by Bui Son Hoang · <span id="version"></span></p>
+  </footer>
+</body>
+</html>

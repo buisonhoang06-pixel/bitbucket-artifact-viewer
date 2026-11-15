@@ -9,7 +9,9 @@ import {
   BE, BENCH_RUN, FE, assetsArchive, benchmarkArchive, junitArchive, junitFixture, logArchive, markdownArchive, mediaArchive,
   reportArchive,
 } from '../helpers/report-fixture.mjs';
-import { BUILD, SIGNED, STEP_A, STEP_B, STORAGE_COOKIE, launch, panelTitle, waitForFrameText } from './fake-bitbucket.mjs';
+import {
+  BUILD, EXTENSION, SIGNED, STEP_A, STEP_B, STORAGE_COOKIE, launch, panelTitle, waitForFrameText,
+} from './fake-bitbucket.mjs';
 import { SELECTED_CLASS, UNSELECTED_CLASS } from './step-page.mjs';
 
 const archive = reportArchive();
@@ -527,6 +529,96 @@ describe('the extension as shipped, with a bitbucket.org tab open', () => {
     await page.waitForTimeout(1500);
     assert.equal(await button.count(), 0);
     await page.close();
+  });
+
+  // The toolbar menu, popup.html, decides from the tab in front of its window. A test cannot drive Chrome's own popup,
+  // so the menu opens as a page of the extension in that tab's window, behind it, and reads the same tab as the popup.
+  async function openMenuBehind(page) {
+    const [worker] = browser.context.serviceWorkers();
+    const opened = browser.context.waitForEvent('page');
+    const front = await worker.evaluate(async (url) => {
+      const tab = (await chrome.tabs.query({})).find((each) => each.url === url);
+      if (!tab) return null;
+      await chrome.tabs.update(tab.id, { active: true });
+      await chrome.tabs.create({ url: chrome.runtime.getURL('popup.html'), windowId: tab.windowId, active: false });
+      return { id: tab.id, index: tab.index, windowId: tab.windowId };
+    }, page.url());
+    assert.ok(front, 'the tab is found');
+    const menu = await opened;
+    // Until the menu has decided: it offers the build, or makes the file button the main one. Timers rather than
+    // animation frames, which a tab behind another may not get.
+    await menu.waitForFunction(
+      () => !document.getElementById('open-build').hidden || document.getElementById('open-viewer').classList.contains('primary'),
+      null,
+      { polling: 100 },
+    );
+    await menu.bringToFront();
+    return { menu, front };
+  }
+
+  test('the toolbar menu over a pipeline step offers its build, and opens it next to the step', async () => {
+    const step = await browser.openBitbucketTab(BUILD.two, STEP_B);
+    const { menu, front } = await openMenuBehind(step);
+    assert.equal(await menu.locator('#open-build').textContent(), 'Open the artifacts of build #43');
+    assert.equal(await menu.locator('#open-build').isVisible(), true);
+    assert.equal(await menu.locator('#open-viewer').evaluate((button) => button.classList.contains('primary')), false);
+
+    const [viewer] = await Promise.all([browser.context.waitForEvent('page'), menu.locator('#open-build').click()]);
+    await waitForFrameText(viewer, 'h1', SUMMARY_TITLE);
+    const query = new URL(viewer.url()).searchParams;
+    assert.deepEqual([query.get('build'), query.get('step')], ['43', STEP_B]);
+    assert.equal(browser.seen.content.at(-1).uuid, uuidOf(BUILD.two, 'b'), "step B's artifact, without a chooser");
+    const placed = await viewer.evaluate(() => chrome.tabs.getCurrent());
+    assert.deepEqual([placed.windowId, placed.index, placed.openerTabId], [front.windowId, front.index + 1, front.id], 'right after the step');
+    await viewer.close();
+    if (!menu.isClosed()) await menu.close();
+    await step.close();
+  });
+
+  test('the toolbar menu elsewhere opens the viewer for a file, thanks, and its links open with no referrer', async () => {
+    const visits = [];
+    const sites = { 'https://ko-fi.com/**': 'Ko-fi', 'https://github.com/**': 'GitHub' };
+    for (const [pattern, name] of Object.entries(sites)) {
+      await browser.context.route(pattern, async (route) => {
+        const request = route.request();
+        if (request.isNavigationRequest()) visits.push({ url: request.url(), referer: (await request.allHeaders()).referer ?? null });
+        return route.fulfill({ contentType: 'text/html', body: `<title>${name}</title><h1>${name}</h1>` });
+      });
+    }
+    try {
+      const [worker] = browser.context.serviceWorkers();
+      const popup = `chrome-extension://${browser.extensionId}/popup.html`;
+      assert.equal(await worker.evaluate(() => chrome.action.getPopup({})), popup, 'the toolbar icon opens the menu');
+      const menu = await browser.context.newPage();
+      await menu.goto(popup);
+      await menu.locator('#open-viewer.primary').waitFor();
+      assert.equal(await menu.locator('#open-build').isHidden(), true, 'no build to offer');
+      assert.equal(await menu.locator('#open-viewer').textContent(), 'Open a downloaded .tar.gz…');
+      assert.equal(await menu.locator('#thanks').textContent(), 'Thank you for using Artifact Viewer!');
+      const { version } = JSON.parse(readFileSync(`${EXTENSION}/manifest.json`, 'utf8'));
+      assert.ok((await menu.locator('footer .made').textContent()).endsWith(` · v${version}`), 'the version shown is the manifest\'s');
+
+      const links = [
+        ['ko-fi', 'https://ko-fi.com/hoangbuison'],
+        ['issues', 'https://github.com/buisonhoang06-pixel/bitbucket-artifact-viewer/issues'],
+      ];
+      for (const [id, url] of links) {
+        const [site] = await Promise.all([browser.context.waitForEvent('page'), menu.locator(`#${id}`).click()]);
+        await site.waitForLoadState();
+        assert.equal(site.url(), url);
+        assert.equal(await site.evaluate(() => window.opener === null), true, `${id}: the site cannot reach the menu`);
+        await site.close();
+      }
+      assert.deepEqual(visits, links.map(([, url]) => ({ url, referer: null })), 'each link opened once, without a referrer');
+
+      const [viewer] = await Promise.all([browser.context.waitForEvent('page'), menu.locator('#open-viewer').click()]);
+      assert.equal(await panelTitle(viewer), 'Open a downloaded artifact');
+      assert.equal(new URL(viewer.url()).search, '', 'drop mode, for no build');
+      await viewer.close();
+      if (!menu.isClosed()) await menu.close();
+    } finally {
+      for (const pattern of Object.keys(sites)) await browser.context.unroute(pattern);
+    }
   });
 
   test('no request went to an unknown host', () => {

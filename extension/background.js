@@ -1,6 +1,6 @@
-// Opens the viewer for the "Open report" button and for the toolbar icon, and gives the Artifact viewer tab the
-// embedded viewer's path.
-import { VIEWER_MESSAGES, parsePipelineUrl, pipelineForViewer, viewerPath } from './lib/bitbucket.js';
+// Opens the viewer for the "Open report" button, and gives the Artifact viewer tab the embedded viewer's path. The
+// toolbar icon opens its own menu, popup.html.
+import { VIEWER_MESSAGES, pipelineForViewer, viewerPath } from './lib/bitbucket.js';
 
 // The decision is pipelineForViewer's: only this extension's content script, in a tab's top frame, with the tab's
 // current address as Chrome reports it.
@@ -17,12 +17,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (pipeline) openViewer(pipeline, sender.tab);
   sendResponse({ opened: Boolean(pipeline) });
   return undefined;
-});
-
-// On a pipeline page the icon opens that build; anywhere else it opens the viewer for a downloaded file.
-// tab.url is readable only on bitbucket.org, where the extension has host access.
-chrome.action.onClicked.addListener((tab) => {
-  openViewer(parsePipelineUrl(tab.url), tab);
 });
 
 // Chrome adds the manifest's content scripts only to pages loaded after the extension is installed or updated. The
